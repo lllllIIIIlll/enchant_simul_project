@@ -1,8 +1,6 @@
 import random
-import time
-import math 
 
-def enchant(enchant_level, equipment):
+def enchant(enchant_level, mini_game):
     base_success_rate = 0.9
 
     # 감소치 계산 (성공확률이 0.3 미만이 되기 전까지)
@@ -13,7 +11,7 @@ def enchant(enchant_level, equipment):
         temp_success_rate = 0.3
 
     # 미니게임 성공 확률 (곱셈)
-    mini_success = mini_enchant(equipment, enchant_level)
+    mini_success = mini_enchant(mini_game, enchant_level)
     success_rate = temp_success_rate * (1 + mini_success)
 
     # 파괴 확률
@@ -31,9 +29,8 @@ def enchant(enchant_level, equipment):
     else:
         return "파괴"
 
-def mini_enchant(game, enchant_level):
-    # 미니 게임 성공 시 최종 강화 성공 확률을 증가시키는 함수 (곱셈용 비율 반환)
-    if game:
-        return enchant_level * 0.05
-    else:
-        return 0.0
+def mini_enchant(mini_game, enchant_level):
+    if mini_game == "성공":
+        return 0.05 * enchant_level
+    elif mini_game == "실패":
+        return 0
