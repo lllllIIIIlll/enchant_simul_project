@@ -1,36 +1,52 @@
+import pygame
 import enchant
-import tkinter as tk
 
-# 전역 변수로 강화 레벨 관리
-equipment_level = 1
+pygame.init()
+WIDTH, HEIGHT = 640, 480
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("장비 강화 게임")
 
-def do_enchant():
-    global equipment_level
-    mini_game = "성공"  # 예시로 항상 성공 처리
-    result = enchant.enchant(equipment_level, mini_game)
-    if result == "성공":
-        equipment_level += 1
-    elif result == "파괴":
-        equipment_level = 1
-    # 실패 시에는 변화 없음
-    result_label.config(text=f"강화 결과: {result} (현재 강화 레벨: {equipment_level})")
-    level_var.set(str(equipment_level))
+font = pygame.font.SysFont("malgungothic", 48)
+small_font = pygame.font.SysFont("malgungothic", 32)
 
-root = tk.Tk()
-root.title("강화 시뮬레이터")
+enchant_level = 1
+button_rect = pygame.Rect(WIDTH//2 - 60, HEIGHT//2, 120, 50)
+result_text = ""
 
-tk.Label(root, text="장비: 무기").pack()
-tk.Label(root, text="강화 레벨:").pack()
+running = True
+while running:
+    screen.fill((240, 240, 255))
 
-level_var = tk.StringVar(value="1")
-level_entry = tk.Entry(root, textvariable=level_var)
-level_entry.pack()
+    # 현재 장비 레벨 표시
+    level_surf = font.render(f"현재 장비 레벨 : {enchant_level}", True, (30, 30, 80))
+    screen.blit(level_surf, (WIDTH//2 - level_surf.get_width()//2, 100))
 
-enchant_button = tk.Button(root, text="강화하기", command=do_enchant)
-enchant_button.pack()
+    # 강화 버튼
+    pygame.draw.rect(screen, (100, 180, 250), button_rect)
+    btn_text = small_font.render("강화", True, (255, 255, 255))
+    screen.blit(btn_text, (button_rect.x + (button_rect.width-btn_text.get_width())//2, button_rect.y + 10))
 
-result_label = tk.Label(root, text="강화 결과: ")
-result_label.pack()
+    # 결과 텍스트
+    if result_text:
+        result_surf = small_font.render(result_text, True, (200, 50, 50))
+        screen.blit(result_surf, (WIDTH//2 - result_surf.get_width()//2, 200))
 
-root.mainloop()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if button_rect.collidepoint(event.pos):
+                # 강화 실행
+                result = enchant.enchant(enchant_level, 1)  # mini_game=1(성공)로 고정, 필요시 수정
+                if result == 1:
+                    enchant_level += 1
+                    result_text = "강화 성공! 레벨이 올랐습니다."
+                elif result == 2:
+                    result_text = "강화 실패! 레벨 유지."
+                else:
+                    enchant_level = 0
+                    result_text = "장비 파괴! 레벨 0으로 초기화."
 
+    pygame.display.flip()
+
+pygame.quit()

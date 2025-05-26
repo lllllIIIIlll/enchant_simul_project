@@ -1,4 +1,4 @@
-# 강화 시뮬레이터 (Python + Tkinter)
+# 강화 시뮬레이터 (Python + pygame)
 
 아이템 강화 시뮬레이터입니다.
 
