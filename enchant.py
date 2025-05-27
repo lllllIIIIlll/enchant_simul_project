@@ -2,8 +2,7 @@ import enchant_rate
 
 def enchant(equipment, enchant_level):
   
-    result = enchant_rate.enchant_rate(enchant_level, 1)  # 0,1,2,3 중 하나 반환
-    print(f"Enchant result: {result}")  # 디버깅용 출력
+    result = enchant_rate.enchant_rate(enchant_level, 1) 
     if result == 0:
         enchant_level = 0
         equipment["image1"] = equipment["image2"]
