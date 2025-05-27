@@ -1,9 +1,20 @@
+<<<<<<< HEAD
 # 강화 시뮬레이터 (Python + Tkinter)
+=======
+# 강화 시뮬레이터 (Python + pygame)
+>>>>>>> rlgus
 
 아이템 강화 시뮬레이터입니다.
 
 미니게임 성공 시 강화 확률이 올라갑니다!
 
+<<<<<<< HEAD
+=======
+## 설치 
+    pip install pygame
+    python -m pip install pygame
+
+>>>>>>> rlgus
 ## 실행 방법
 
 s
