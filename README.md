@@ -4,6 +4,10 @@
 
 미니게임 성공 시 강화 확률이 올라갑니다!
 
+## 설치 
+    pip install pygame
+    python -m pip install pygame
+
 ## 실행 방법
 
 s

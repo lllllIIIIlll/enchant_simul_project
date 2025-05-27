@@ -1,30 +1,24 @@
-import random
+import enchant_rate
 
-def enchant(enchant_level, mini_game):
-    base_success_rate = 0.9
-
-    reduction = enchant_level * 0.05
-    temp_success_rate = base_success_rate - reduction
-    if temp_success_rate < 0.3:
-        reduction = base_success_rate - 0.3
-        temp_success_rate = 0.3
-
-    mini_success = mini_enchant(mini_game, enchant_level)
-    success_rate = temp_success_rate * (1 + mini_success)
-
-    destroy_rate = 0.001 + enchant_level * 0.005
-    fail_rate = 1 - success_rate - destroy_rate
-
-    rand = random.random()
-    if rand < success_rate:
-        return 1
-    elif rand < success_rate + fail_rate:
-        return 2
+def enchant(equipment, enchant_level):
+  
+    result = enchant_rate.enchant_rate(enchant_level, 1)  # 0,1,2,3 중 하나 반환
+    print(f"Enchant result: {result}")  # 디버깅용 출력
+    if result == 0:
+        enchant_level = 0
+        equipment["image1"] = equipment["image2"]
+        result_msg = "파괴되었습니다"
+    elif result == 1:
+        enchant_level += 1
+        result_msg = "성공"
+    elif result == 2:
+        result_msg = "실패"
+        enchant_level = enchant_level
+    elif result == 3:
+        result_msg = "더 이상 강화할 수 없습니다"
+        enchant_level = enchant_level
     else:
-        return 0
+        result_msg = "알 수 없는 결과"
+        enchant_level = enchant_level
 
-def mini_enchant(mini_game, enchant_level):
-    if mini_game == 1:
-        return 0.05 * enchant_level
-    elif mini_game == 2:
-        return 0
+    return enchant_level, result_msg
