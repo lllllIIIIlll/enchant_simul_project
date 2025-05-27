@@ -1,6 +1,7 @@
 import pygame
 import json
 from enchant import enchant 
+from mini_game import mini_game
 
 pygame.init()
 screen = pygame.display.set_mode((600, 400))
@@ -55,7 +56,8 @@ while running:
                 if enhance_btn.is_clicked(event.pos):
                     equip = next((e for e in equipment_data if e["type"] == selected_type), None)
                     if equip:
-                        enchant_level, result_msg = enchant(equip, enchant_level)
+                        mini_result = mini_game()  # 미니게임 실행 (1 또는 0 반환)
+                        enchant_level, result_msg = enchant(equip, enchant_level, mini_result)
                         enchant_count += 1
                         popup_timer = pygame.time.get_ticks() 
                 elif back_btn.is_clicked(event.pos):
@@ -81,7 +83,7 @@ while running:
                 col = i % max_per_row
                 x = margin_x + col * gap
                 y = margin_y + row * gap
-                img_star = pygame.image.load("picture/knife.jpg") # 별 이미지 삽입 필요
+                img_star = pygame.image.load("picture/sword1.jpg") # 별 이미지 삽입 필요
                 img_star = pygame.transform.scale(img_star, (img_size, img_size))
                 screen.blit(img_star, (x, y))
         except Exception:
