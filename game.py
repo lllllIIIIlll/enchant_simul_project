@@ -2,6 +2,7 @@ import pygame
 import json
 from enchant import enchant 
 from mini_game import mini_game_popup
+from enchant_rate import show_rate_table_popup
 
 pygame.init()
 screen = pygame.display.set_mode((800, 640))
@@ -93,6 +94,11 @@ while running:
         img_enchant = pygame.transform.scale(img_enchant, (500, 500))
         img_rect = img_enchant.get_rect(center=(screen_width // 2, screen_height // 2 ))
         screen.blit(img_enchant, img_rect)
+            # '확률표 조정' 버튼 (장비강화 밑에)
+        rate_btn = Button((screen_width // 2 - 75, 160, 150, 40), "확률표 조정")
+        rate_btn.draw(screen)
+        if event.type == pygame.MOUSEBUTTONDOWN and rate_btn.is_clicked(event.pos):
+            show_rate_table_popup(screen)  # enchant_rate에서 팝업 호출
         
     else:
         # img_star: 중 상단 정렬

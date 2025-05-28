@@ -1,8 +1,7 @@
-import enchant_rate
+import rate
 
 def enchant(equipment, enchant_level, mini_game_result=0):
-    print("mini_game_result in enchant:", mini_game_result)
-    result = enchant_rate.enchant_rate(enchant_level, mini_game_result)
+    result = rate.enchant_rate(enchant_level, mini_game_result)
     if result == 0:
         enchant_level = 0
         equipment["image1"] = equipment["image2"]
