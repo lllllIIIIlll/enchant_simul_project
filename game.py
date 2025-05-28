@@ -100,7 +100,21 @@ while running:
         equip = next((e for e in equipment_data if e["type"] == selected_type), None)
         if equip:
             try:
-                img = pygame.image.load(equip["image1"])
+                # enchant_level에 따라 image1, image2, image3, image4 선택
+                try:
+                    if 0 <= enchant_level < 15:
+                        img_key = "image1"
+                    elif 15 <= enchant_level < 20:
+                        img_key = "image2"
+                    elif 20 <= enchant_level < 26:
+                        img_key = "image3"
+                    elif 26 <= enchant_level <= 30:
+                        img_key = "image4"
+                    else:
+                        img_key = "image1"
+                    img = pygame.image.load(equip.get(img_key, equip["image1"]))
+                except Exception:
+                    img = pygame.image.load(equip["image1"])
                 img = pygame.transform.scale(img, (100, 100))
                 screen.blit(img, (250, 150))
             except Exception:

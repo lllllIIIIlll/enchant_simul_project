@@ -5,15 +5,18 @@
         "attack": 15,
         "image1": "picture/sword1.png",
         "image2": "picture/sword2.png",
-        "image3": "picture/sword3.png"
+        "image3": "picture/sword3.png",
+        "image4": "picture/sword3.png"
     },
     {
         "type": "방어구",
         "name": "갑옷",
         "hp": 50,
         "defense": 10,
-        "image1": "picture/sword1.png",
-        "image2": "picture/sword1.png"
+        "image1": "picture/armor2.png",
+        "image2": "picture/armor2.png",
+        "image3": "picture/armor2.png",
+        "image4": "picture/armor2.png"
     },
     {
         "type": "악세서리",
@@ -23,6 +26,7 @@
         "attack": 5,
         "image1": "picture/accessory1.png",
         "image2": "picture/accessory2.png",
-        "image3": "picture/accessory3.png"
+        "image3": "picture/accessory3.png",
+        "image4": "picture/accessory3.png"
     }
 ]
