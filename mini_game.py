@@ -20,7 +20,7 @@ def mini_game_popup(screen):
     success_left = center - success_width // 2
     success_right = center + success_width // 2
 
-    player_img = pygame.image.load("picture/star.png")
+    player_img = pygame.image.load("picture/star2.png")
     player_img = pygame.transform.scale(player_img, (20, 20))
     player_x = bar_x
     player_y = bar_y - 15

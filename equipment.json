@@ -13,10 +13,10 @@
         "name": "갑옷",
         "hp": 50,
         "defense": 10,
-        "image1": "picture/armor2.png",
-        "image2": "picture/armor2.png",
-        "image3": "picture/armor2.png",
-        "image4": "picture/armor2.png"
+        "image1": "picture/Armor 1.png",
+        "image2": "picture/Armor 2.png",
+        "image3": "picture/Armor 3.png",
+        "image4": "picture/Armor 3.png"
     },
     {
         "type": "악세서리",

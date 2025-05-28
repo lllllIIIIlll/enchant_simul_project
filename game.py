@@ -89,8 +89,8 @@ while running:
             btn.rect = pygame.Rect(start_x + i * (btn_width + btn_gap), y, btn_width, btn_height)
             btn.draw(screen)
 
-        img_enchant = pygame.image.load("picture/star.png")
-        img_enchant = pygame.transform.scale(img_enchant, (200, 200))
+        img_enchant = pygame.image.load("picture/Anvil 2.png")
+        img_enchant = pygame.transform.scale(img_enchant, (500, 500))
         img_rect = img_enchant.get_rect(center=(screen_width // 2, screen_height // 2 ))
         screen.blit(img_enchant, img_rect)
         
@@ -109,7 +109,7 @@ while running:
                 col = i % max_per_row
                 x = start_x + col * (img_size + gap)
                 star_y = y + row * (img_size + gap)
-                img_star = pygame.image.load("picture/star.png")
+                img_star = pygame.image.load("picture/star2.png")
                 img_star = pygame.transform.scale(img_star, (img_size, img_size))
                 screen.blit(img_star, (x, star_y))
                 last_star_bottom = max(last_star_bottom, star_y + img_size + gap)
@@ -136,7 +136,7 @@ while running:
                 else:
                     img_key = "image1"
                 img = pygame.image.load(equip.get(img_key, equip["image1"]))
-                img = pygame.transform.scale(img, (120, 420))
+                img = pygame.transform.scale(img, (160, 420))
                 img_rect = img.get_rect(center=(screen_width // 2, screen_height // 2))
                 screen.blit(img, img_rect)
             except Exception:
