@@ -13,7 +13,7 @@ def mini_game_popup(screen):
     bar_x = 20
     bar_y = 100
     bar_width = popup_width - 2 * bar_x
-    bar_height = 10
+    bar_height = 20
 
     center = bar_x + bar_width // 2
     success_width = 40 + random.randint(-15, 15)
@@ -60,6 +60,13 @@ def mini_game_popup(screen):
         pygame.draw.rect(popup, (180, 180, 180), (bar_x, bar_y, bar_width, bar_height))
         pygame.draw.rect(popup, (100, 200, 100), (success_left, bar_y, success_width, bar_height))
         popup.blit(player_img, (int(player_x), player_y))
+
+        elapsed = time.time() - start_time
+        remain = max(0, 5 - int(elapsed))
+        if remain > 0:
+            time_txt = font.render(str(remain), True, (0, 0, 0))
+            time_txt_rect = time_txt.get_rect(center=(popup_width // 2, popup_height // 2))
+            popup.blit(time_txt, time_txt_rect)
 
         # 메인 화면에 팝업 표시
         screen.blit(popup, popup_rect)
