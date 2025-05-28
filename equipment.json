@@ -4,7 +4,8 @@
         "name": "소드",
         "attack": 15,
         "image1": "picture/sword1.png",
-        "image2": "picture/sword1.png"
+        "image2": "picture/sword2.png",
+        "image3": "picture/sword3.png"
     },
     {
         "type": "방어구",
@@ -20,7 +21,8 @@
         "hp": 10,
         "defense": 5,
         "attack": 5,
-        "image1": "picture/sword1.png",
-        "image2": "picture/sword1.png"
+        "image1": "picture/accessory1.png",
+        "image2": "picture/accessory2.png",
+        "image3": "picture/accessory3.png"
     }
 ]

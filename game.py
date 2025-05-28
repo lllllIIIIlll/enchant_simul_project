@@ -1,7 +1,7 @@
 import pygame
 import json
 from enchant import enchant 
-from mini_game import mini_game
+from mini_game import mini_game_popup
 
 pygame.init()
 screen = pygame.display.set_mode((600, 400))
@@ -25,7 +25,11 @@ class Button:
 with open("equipment.json", encoding="utf-8") as f:
     equipment_data = json.load(f)
 
-type_select = list({e["type"] for e in equipment_data})
+type_select = []
+for e in equipment_data:
+    if e["type"] not in type_select:
+        type_select.append(e["type"])
+        
 type_buttons = [Button((50 + i*180, 200, 150, 50), t) for i, t in enumerate(type_select)]
 
 selected_type = None
@@ -56,10 +60,10 @@ while running:
                 if enhance_btn.is_clicked(event.pos):
                     equip = next((e for e in equipment_data if e["type"] == selected_type), None)
                     if equip:
-                        mini_result = mini_game()  # 미니게임 실행 (1 또는 0 반환)
+                        mini_result = mini_game_popup(screen)  # 메인 화면 위에 popup처럼 출력
                         enchant_level, result_msg = enchant(equip, enchant_level, mini_result)
                         enchant_count += 1
-                        popup_timer = pygame.time.get_ticks() 
+                        popup_timer = pygame.time.get_ticks()
                 elif back_btn.is_clicked(event.pos):
                     selected_type = None
                     enchant_level = 0
@@ -83,7 +87,7 @@ while running:
                 col = i % max_per_row
                 x = margin_x + col * gap
                 y = margin_y + row * gap
-                img_star = pygame.image.load("picture/sword1.jpg") # 별 이미지 삽입 필요
+                img_star = pygame.image.load("picture/star.png") # 별 이미지 삽입 필요
                 img_star = pygame.transform.scale(img_star, (img_size, img_size))
                 screen.blit(img_star, (x, y))
         except Exception:

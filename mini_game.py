@@ -2,11 +2,10 @@ import pygame
 import random
 import time
 
-def mini_game():
-    pygame.init()
+def mini_game_popup(screen):
     popup_width, popup_height = 240, 160
     popup = pygame.Surface((popup_width, popup_height))
-    popup_rect = popup.get_rect(center=(300, 200))  
+    popup_rect = popup.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
 
     font = pygame.font.SysFont("malgun gothic", 18)
     clock = pygame.time.Clock()
@@ -17,7 +16,7 @@ def mini_game():
     bar_height = 10
 
     center = bar_x + bar_width // 2
-    success_width = 80 + random.randint(-15, 15)  # 80 +- 15
+    success_width = 40 + random.randint(-15, 15)
     success_left = center - success_width // 2
     success_right = center + success_width // 2
 
@@ -41,8 +40,7 @@ def mini_game():
                 return 0
             elif event.type == pygame.QUIT:
                 return 0
-                
-            
+
         player_x += player_speed * direction
         player_speed += accel * direction
         if player_x <= bar_x:
@@ -58,20 +56,16 @@ def mini_game():
         popup.fill((240, 240, 240))
         txt = font.render("중앙을 맞추세요", True, (0, 0, 0))
         txt_rect = txt.get_rect(center=(popup_width // 2, 30))
-
         popup.blit(txt, txt_rect)
         pygame.draw.rect(popup, (180, 180, 180), (bar_x, bar_y, bar_width, bar_height))
         pygame.draw.rect(popup, (100, 200, 100), (success_left, bar_y, success_width, bar_height))
         popup.blit(player_img, (int(player_x), player_y))
 
-        screen = pygame.display.get_surface()
+        # 메인 화면에 팝업 표시
         screen.blit(popup, popup_rect)
         pygame.display.flip()
         clock.tick(60)
 
         if time.time() - start_time > 5:
-            return 0  # 5초 경과 시 실패 처리
-    return 0  # 혹시라도 while문을 빠져나오면 실패 처리
-
-    pygame.time.delay(300)
-    return result
+            return 0
+    return 0
