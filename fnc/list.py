@@ -62,12 +62,14 @@ def load_table_data():
     return table_data
 
 def reset_json():
-    data = load_json("list_rate.json") # list_rate 초기화
+    # list_rate.json 초기화
+    data = load_json("list_rate.json")
     for key in data:
         if key != "level":
             data[key] = [0]*30
     save_json("list_rate.json", data)
-    table_data = load_json("list_table.json") # list_table.json 초기화
+    # list_table.json 초기화
+    table_data = load_json("list_table.json")
     for key in table_data:
         if key != "level":
             table_data[key] = [0]*30
