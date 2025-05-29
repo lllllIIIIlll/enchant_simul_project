@@ -129,7 +129,7 @@ def show_rate_table_popup(screen):
                             invalid = True
                         new_rate.append((s, d))
                     if invalid:
-                        prompt = "저장 실패: 성공+파괴 확률 합이 1.0을 초과한 칸이 초기화되었습니다."
+                        prompt = "저장 실패: 확률 합이 100%를 초과한 칸이 초기화되었습니다."
                     elif len(new_rate) == 30:
                         rate.set_input_rate(new_rate)
                         prompt = "저장 완료!"

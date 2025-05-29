@@ -17,6 +17,7 @@ level = list(range(1, 31))
 level_try = table["level_try"]
 success = table["success"]
 m_s = table["m_s"]
+mini_game_success = table.get("mini_game_success", [0]*30)  # 추가
 
 a_s_rate = []
 a_try = []
@@ -27,10 +28,11 @@ for i in range(30):
         s_rate = success[i] / level_try[i]
         a_s_rate.append(s_rate)
         a_try.append(1 / s_rate if s_rate > 0 else 0)
-        if m_s[i] > 0:
-            m_s_rate.append(1-(1-s_rate/1.05)**level[i])
+        # 미니게임 성공 시 강화 성공 확률 = m_s / mini_game_success
+        if mini_game_success[i] > 0:
+            m_s_rate.append(m_s[i] / mini_game_success[i])
         else:
-            m_s_rate.append(s_rate)
+            m_s_rate.append(0)
     else:
         a_s_rate.append(0)
         a_try.append(0)
@@ -73,4 +75,7 @@ def reset_json():
     for key in table_data:
         if key != "level":
             table_data[key] = [0]*30
+    # mini_game_success도 0으로 초기화
+    if "mini_game_success" in table_data:
+        table_data["mini_game_success"] = [0]*30
     save_json("list_table.json", table_data)

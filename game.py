@@ -148,16 +148,20 @@ while running:
                         mini_result = mini_game_popup(screen)
                         # 강화 시도 기록
                         stats["level_try"][enchant_level] += 1
+                        if mini_result == 1:
+                            # 미니게임 성공 시도 기록
+                            if "mini_game_success" not in stats:
+                                stats["mini_game_success"] = [0]*30
+                            stats["mini_game_success"][enchant_level] += 1
                         prev_level = enchant_level
                         enchant_level, result_msg = enchant(equip, enchant_level, mini_result)
                         # 성공 기록
                         if result_msg == "강화 성공":
                             stats["success"][prev_level] += 1
-                            # mini_game이 1이고, 강화가 '성공'일 때만 m_s 증가
                             if mini_result == 1 and (result_msg == "강화 성공" or result_msg == "성공"):
                                 stats["m_s"][prev_level] += 1
                         enchant_count += 1
-                        stats["enchant_count"] = enchant_count  # json에 저장
+                        stats["enchant_count"] = enchant_count
                         save_stats(stats)
                         popup_timer = pygame.time.get_ticks()
                 elif back_btn.is_clicked(event.pos):
