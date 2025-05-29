@@ -5,7 +5,6 @@ from enchant import enchant
 from mini_game import mini_game_popup
 from enchant_rate import show_rate_table_popup
 import subprocess
-import requests
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 820))
