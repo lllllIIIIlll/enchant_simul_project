@@ -4,19 +4,15 @@ def enchant(equipment, enchant_level, mini_game_result=0):
     result = rate.enchant_rate(enchant_level, mini_game_result)
     if result == 0:
         enchant_level = 0
-        equipment["image1"] = equipment["image2"]
-        result_msg = "파괴되었습니다"
+        equipment["image1"] 
+        msg = "파괴되었습니다"
     elif result == 1:
         enchant_level += 1
-        result_msg = "성공"
+        msg = "강화 성공"
     elif result == 2:
-        result_msg = "실패"
-        enchant_level = enchant_level
+        msg = "강화 실패"
     elif result == 3:
-        result_msg = "더 이상 강화할 수 없습니다"
-        enchant_level = enchant_level
+        msg = "더 이상 강화할 수 없습니다"
     else:
-        result_msg = "알 수 없는 결과"
-        enchant_level = enchant_level
-
-    return enchant_level, result_msg
+        msg = "알 수 없는 결과"
+    return enchant_level, msg

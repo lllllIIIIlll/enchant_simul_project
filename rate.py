@@ -21,7 +21,6 @@ def get_input_rate():
 def set_input_rate(new_rate):
     global input_rate
     if len(new_rate) != 30:
-        print("input_rate 길이 오류:", len(new_rate))
         raise ValueError("input_rate의 길이는 30이어야 합니다.")
     input_rate = new_rate.copy()
 

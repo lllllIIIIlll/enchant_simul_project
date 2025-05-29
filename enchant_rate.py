@@ -41,13 +41,13 @@ class IndexBox:
         self.idx = idx
         self.font = font
         
-    def draw(self, screen, s_val, d_val):
+    def draw(self, screen):
         bold_font = pygame.font.SysFont("malgun gothic", 14, bold=True)
         idx_txt = bold_font.render(f"{self.idx+1}단계", True, (0,0,0))
         s_txt = self.font.render(str("성공"), True, (0,0,0))
         d_txt = self.font.render(str("파괴"), True, (0,0,0))
-
         idx_rect = idx_txt.get_rect(center=(self.rect.x + self.rect.w // 2, self.rect.y + 15))
+        
         screen.blit(idx_txt, idx_rect)
         screen.blit(s_txt, (self.rect.x+5, self.rect.y+30))
         screen.blit(d_txt, (self.rect.x+5, self.rect.y+60))
