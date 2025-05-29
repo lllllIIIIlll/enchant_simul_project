@@ -1,6 +1,7 @@
 import pygame
 import json
 import subprocess
+import sys
 
 # list.py를 먼저 실행해서 최신 통계 갱신
 subprocess.run(["python", "list.py"])
@@ -81,6 +82,10 @@ def reset_json():
             table_data[key] = [0]*30
     with open("list_table.json", "w", encoding="utf-8") as f:
         json.dump(table_data, f, ensure_ascii=False, indent=2)
+
+if "--reset" in sys.argv:
+    reset_json()
+    sys.exit()
 
 # 버튼 생성
 reset_btn = Button((screen.get_width()-140, screen.get_height()-60, 110, 40), "초기화", font)

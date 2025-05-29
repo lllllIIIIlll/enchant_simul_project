@@ -5,6 +5,7 @@ from enchant import enchant
 from mini_game import mini_game_popup
 from enchant_rate import show_rate_table_popup
 import subprocess
+import requests
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 820))
@@ -127,6 +128,11 @@ while running:
                 if rate_btn.is_clicked(event.pos):
                     show_rate_table_popup(screen)
                 elif quit_btn.is_clicked(event.pos):
+                    # table.py의 reset_btn 기능을 실행 (reset_json 함수 호출)
+                    # 방법1: table.py에 reset_json만 실행하는 엔드포인트를 만들어두고, 여기서 호출
+                    # 방법2: reset_json만 실행하는 별도 스크립트 생성 후 여기서 실행
+                    # 여기서는 방법2 예시 (reset_table.py를 만들어서 실행)
+                    subprocess.run(["python", "table.py", "--reset"])
                     running = False
                 elif table_btn.is_clicked(event.pos):
                     subprocess.Popen(["python", "table.py"])
