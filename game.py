@@ -1,8 +1,10 @@
 import pygame
 import json
+import os
 from enchant import enchant 
 from mini_game import mini_game_popup
 from enchant_rate import show_rate_table_popup
+import subprocess
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 820))
@@ -28,6 +30,31 @@ class Button:
 def load_equipment():
     with open("equipment.json", encoding="utf-8") as f:
         return json.load(f)
+
+def load_stats():
+    path = "list_table.json"
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            stats = json.load(f)
+            # enchant_count가 없으면 0으로 추가
+            if "enchant_count" not in stats:
+                stats["enchant_count"] = 0
+            return stats
+    # 없으면 0으로 초기화
+    return {
+        "level": [0]*30,
+        "level_try": [0]*30,
+        "m_s": [0]*30,
+        "success": [0]*30,
+        "enchant_count": 0
+    }
+
+def save_stats(stats):
+    with open("list_table.json", "w", encoding="utf-8") as f:
+        json.dump(stats, f, ensure_ascii=False, indent=2)
+
+stats = load_stats()
+enchant_count = stats.get("enchant_count", 0)
 
 def draw_type_buttons(buttons, screen_width, screen_height):
     btn_width, btn_height = 150, 50
@@ -101,6 +128,8 @@ while running:
                     show_rate_table_popup(screen)
                 elif quit_btn.is_clicked(event.pos):
                     running = False
+                elif table_btn.is_clicked(event.pos):
+                    subprocess.Popen(["python", "table.py"])
                 for btn in type_buttons:
                     if btn.is_clicked(event.pos):
                         selected_type = btn.text
@@ -111,8 +140,19 @@ while running:
                     equip = next((e for e in equipment_data if e["type"] == selected_type), None)
                     if equip:
                         mini_result = mini_game_popup(screen)
+                        # 강화 시도 기록
+                        stats["level_try"][enchant_level] += 1
+                        prev_level = enchant_level
                         enchant_level, result_msg = enchant(equip, enchant_level, mini_result)
+                        # 성공 기록
+                        if result_msg == "강화 성공":
+                            stats["success"][prev_level] += 1
+                            # mini_game이 1이고, 강화가 '성공'일 때만 m_s 증가
+                            if mini_result == 1 and (result_msg == "강화 성공" or result_msg == "성공"):
+                                stats["m_s"][prev_level] += 1
                         enchant_count += 1
+                        stats["enchant_count"] = enchant_count  # json에 저장
+                        save_stats(stats)
                         popup_timer = pygame.time.get_ticks()
                 elif back_btn.is_clicked(event.pos):
                     selected_type = None
@@ -127,6 +167,10 @@ while running:
         rate_btn_y = title_rect.bottom + 30 
         rate_btn = Button((screen_width // 2 - 75, rate_btn_y, 150, 40), "확률표")
         rate_btn.draw(screen)
+
+        # table_btn(통계표) 버튼 추가
+        table_btn = Button((screen_width // 2 + 85, rate_btn_y, 150, 40), "통계표")
+        table_btn.draw(screen)
 
         quit_btn = Button((screen_width - 150, screen_height - 70, 100, 40), "종료")
         quit_btn.draw(screen)
