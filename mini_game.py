@@ -52,7 +52,6 @@ def mini_game_popup(screen):
             direction = -1
             player_speed = abs(player_speed)
 
-        # 팝업 그리기
         popup.fill((240, 240, 240))
         txt = font.render("중앙을 맞추세요", True, (0, 0, 0))
         txt_rect = txt.get_rect(center=(popup_width // 2, 30))
@@ -64,11 +63,11 @@ def mini_game_popup(screen):
         elapsed = time.time() - start_time
         remain = max(0, 5 - int(elapsed))
         if remain > 0:
-            time_txt = font.render(str(remain), True, (0, 0, 0))
+            bold_font = pygame.font.SysFont("malgun gothic", 18, bold=True)
+            time_txt = bold_font.render(str(remain), True, (0, 0, 0))
             time_txt_rect = time_txt.get_rect(center=(popup_width // 2, popup_height // 2))
             popup.blit(time_txt, time_txt_rect)
 
-        # 메인 화면에 팝업 표시
         screen.blit(popup, popup_rect)
         pygame.display.flip()
         clock.tick(60)

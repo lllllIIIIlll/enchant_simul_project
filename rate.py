@@ -32,17 +32,16 @@ def enchant_rate(enchant_level, mini_game):
 
     base_success, destroy_rate = input_rate[enchant_level]
     success_rate = base_success * (1 + mini_enchant(mini_game))
-    print(f"base_success: {base_success}, mini_game bonus: {mini_enchant(mini_game)}, success_rate: {success_rate}, destroy_rate: {destroy_rate}")  # 디버깅용 출력
     
     rand = random.random()
     if rand < success_rate:
-        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, Random value: {rand}")  # 디버깅용 출력
+        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, mini_game bonus: {mini_enchant(mini_game)}")  # 디버깅용 출력
         return 1  
     elif rand < destroy_rate:
-        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, Random value: {rand}")
+        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, mini_game bonus: {mini_enchant(mini_game)}")
         return 0 
     else:
-        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, Random value: {rand}") 
+        print(f"Enchant success: {success_rate}, Destroy rate: {destroy_rate}, mini_game bonus: {mini_enchant(mini_game)}") 
         return 2  
 
 def mini_enchant(mini_game):

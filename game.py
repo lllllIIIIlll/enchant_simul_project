@@ -52,7 +52,6 @@ while running:
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if selected_type is None:
-                # --- 확률표 버튼 클릭 처리 ---
                 if rate_btn.is_clicked(event.pos):
                     show_rate_table_popup(screen)
                 for btn in type_buttons:
@@ -61,11 +60,9 @@ while running:
                         enchant_level = 0
                         result_msg = ""
             else:
-                # 강화 버튼: 중 하단
                 enhance_btn = Button(
                     ((screen_width - 150) // 2, screen_height - 100, 150, 50), "강화"
                 )
-                # 뒤로가기 버튼: 좌 하단
                 back_btn = Button(
                     (30, screen_height - 70, 100, 40), "뒤로가기"
                 )
@@ -87,12 +84,10 @@ while running:
         title_rect = title.get_rect(center=(screen_width // 2, 100))
         screen.blit(title, title_rect)
 
-        # --- 확률표 버튼 추가 (장비강화와 anvil 이미지 사이) ---
-        rate_btn_y = title_rect.bottom + 30  # "장비강화" 아래 30px
+        rate_btn_y = title_rect.bottom + 30 
         rate_btn = Button((screen_width // 2 - 75, rate_btn_y, 150, 40), "확률표")
         rate_btn.draw(screen)
 
-        # type 버튼: 중 하단 정렬
         btn_width, btn_height = 150, 50
         btn_gap = 40
         total_width = len(type_buttons) * btn_width + (len(type_buttons) - 1) * btn_gap
@@ -108,14 +103,13 @@ while running:
         screen.blit(img_enchant, img_rect)
         
     else:
-        # img_star: 중 상단 정렬
         try:
             max_per_row = 15
             img_size = 30
             gap = 15
             stars_width = min(enchant_level, max_per_row) * img_size + max(0, min(enchant_level, max_per_row) - 1) * gap
             start_x = (screen_width - stars_width) // 2
-            y = 40  # 상단 여백
+            y = 40 
             last_star_bottom = y
             for i in range(enchant_level):
                 row = i // max_per_row
@@ -129,12 +123,10 @@ while running:
         except Exception:
             last_star_bottom = 70
 
-        # 강화 레벨: img_star 바로 아래 중앙
         level_txt = font.render(f"강화 레벨: {enchant_level}", True, (0, 0, 0))
         level_rect = level_txt.get_rect(center=(screen_width // 2, last_star_bottom + 0))
         screen.blit(level_txt, level_rect)
 
-        # 장비 이미지: 화면 정 중앙에 배치
         equip = next((e for e in equipment_data if e["type"] == selected_type), None)
         if equip:
             try:
@@ -155,24 +147,20 @@ while running:
             except Exception:
                 pass
 
-        # 강화 버튼: 중 하단
         enhance_btn = Button(
             ((screen_width - 150) // 2, screen_height - 100, 150, 50), "강화"
         )
         enhance_btn.draw(screen)
 
-        # 뒤로가기 버튼: 좌 하단
         back_btn = Button(
             (30, screen_height - 70, 100, 40), "뒤로가기"
         )
         back_btn.draw(screen)
 
-        # 누적 강화 횟수: 우 하단
         count_txt = font.render(f"누적 강화 횟수: {enchant_count}", True, (0, 0, 0))
         count_rect = count_txt.get_rect(bottomright=(screen_width - 30, screen_height - 30))
         screen.blit(count_txt, count_rect)
 
-        # result_msg 팝업: 중 중단 정렬(팝업)
         if result_msg:
             now = pygame.time.get_ticks()
             if now - popup_timer < 1000:

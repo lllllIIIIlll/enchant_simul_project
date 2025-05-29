@@ -26,11 +26,9 @@ class RateBox:
     def draw(self, screen):
         pygame.draw.rect(screen, (230, 230, 255), self.rect)
         pygame.draw.rect(screen, (0, 0, 0), self.rect, 2)
-        # 텍스트 출력
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
-        # 깜빡이는 커서
+
         if self.active:
-            # 0.5초마다 깜빡임
             if (pygame.time.get_ticks() // 500) % 2 == 0:
                 cursor_x = self.rect.x + 5 + self.txt_surface.get_width()
                 cursor_y = self.rect.y + 7
@@ -44,12 +42,11 @@ class IndexBox:
         self.font = font
         
     def draw(self, screen, s_val, d_val):
-        # 볼드체 폰트 생성 (한 번만 생성하도록 개선 가능)
         bold_font = pygame.font.SysFont("malgun gothic", 14, bold=True)
         idx_txt = bold_font.render(f"{self.idx+1}단계", True, (0,0,0))
         s_txt = self.font.render(str("성공"), True, (0,0,0))
         d_txt = self.font.render(str("파괴"), True, (0,0,0))
-        # Index 텍스트를 박스 중앙 상단에 출력
+
         idx_rect = idx_txt.get_rect(center=(self.rect.x + self.rect.w // 2, self.rect.y + 15))
         screen.blit(idx_txt, idx_rect)
         screen.blit(s_txt, (self.rect.x+5, self.rect.y+30))
@@ -78,20 +75,16 @@ def show_rate_table_popup(screen):
     input_rate = rate.get_input_rate()
     rate_table = [list(t) for t in input_rate]
 
-    # 박스 크기 및 행/열 수
     box_w, box_h = 120, 100
     margin_x, margin_y = 10, 10
     cols, rows = 6, 5
 
-    # 전체 테이블 크기 계산
     total_w = cols * box_w + (cols - 1) * margin_x
     total_h = rows * box_h + (rows - 1) * margin_y
 
-    # 중앙 정렬 좌표 계산
     start_x = (screen.get_width() - total_w) // 2
     start_y = (screen.get_height() - total_h) // 2
 
-    # 5x6 index_box + rate_box 생성
     index_boxes = []
     rate_boxes = []
     for i in range(rows):
@@ -133,7 +126,7 @@ def show_rate_table_popup(screen):
                         new_rate.append((s, d))
                     if len(new_rate) == 30:
                         rate.set_input_rate(new_rate)
-                        prompt = "저장 완료! input_rate에 반영되었습니다."
+                        prompt = "저장 완료!"
                     else:
                         prompt = "저장 실패: 값 개수 오류"
                 elif restore_btn.is_clicked(event.pos):
@@ -143,16 +136,14 @@ def show_rate_table_popup(screen):
                         d_box.text = str(base_rate[idx][1])
                         d_box.txt_surface = font.render(d_box.text, True, (0, 0, 0))
                     rate.set_input_rate(list(base_rate))
-                    prompt = "되돌리기 완료! base_rate로 복구되었습니다."
+                    prompt = "되돌리기 완료!"
                 elif back_btn.is_clicked(event.pos):
                     running = False
 
         screen.fill((240, 240, 240))
         title = big_font.render("확률표 조정", True, (0, 0, 0))
         screen.blit(title, (screen.get_width() // 2 - title.get_width() // 2, 40))
-        # index_box + rate_box 5x6 행렬로 그리기
         for idx, (ibox, (s_box, d_box)) in enumerate(zip(index_boxes, rate_boxes)):
-            # 입력박스의 현재 값을 index_box에 전달
             ibox.draw(screen, s_box.text, d_box.text)
             s_box.draw(screen)
             d_box.draw(screen)
