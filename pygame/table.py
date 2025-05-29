@@ -1,7 +1,7 @@
 import pygame
 import subprocess
 import sys
-import list  
+from fnc import list  
 
 subprocess.run(["python", "list.py"])
 

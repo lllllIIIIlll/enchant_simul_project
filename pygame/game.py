@@ -1,7 +1,9 @@
 import pygame
 import json
 import os
-from fnc import enchant 
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "fnc"))
+from enchant import enchant 
 from mini_game import mini_game_popup
 from enchant_rate import show_rate_table_popup
 import subprocess
@@ -28,7 +30,7 @@ class Button:
         return self.rect.collidepoint(pos)
 
 def load_equipment():
-    with open("equipment.json", encoding="utf-8") as f:
+    with open("json/equipment.json", encoding="utf-8") as f:
         return json.load(f)
 
 def load_stats():
