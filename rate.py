@@ -47,6 +47,5 @@ def enchant_rate(enchant_level, mini_game):
 def mini_enchant(mini_game):
     if mini_game == 1:
         return 0.05
-    elif mini_game == 0:
-        return 0
+    return 0
 
