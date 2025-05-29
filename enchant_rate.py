@@ -27,13 +27,11 @@ class RateBox:
         pygame.draw.rect(screen, (230, 230, 255), self.rect)
         pygame.draw.rect(screen, (0, 0, 0), self.rect, 2)
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
-
-        if self.active:
-            if (pygame.time.get_ticks() // 500) % 2 == 0:
-                cursor_x = self.rect.x + 5 + self.txt_surface.get_width()
-                cursor_y = self.rect.y + 7
-                cursor_h = self.txt_surface.get_height()
-                pygame.draw.line(screen, (0,0,0), (cursor_x, cursor_y), (cursor_x, cursor_y + cursor_h), 2)
+        if self.active and (pygame.time.get_ticks() // 500) % 2 == 0:
+            cursor_x = self.rect.x + 5 + self.txt_surface.get_width()
+            cursor_y = self.rect.y + 7
+            cursor_h = self.txt_surface.get_height()
+            pygame.draw.line(screen, (0,0,0), (cursor_x, cursor_y), (cursor_x, cursor_y + cursor_h), 2)
 
 class IndexBox:
     def __init__(self, x, y, w, h, idx, font):
@@ -41,13 +39,12 @@ class IndexBox:
         self.idx = idx
         self.font = font
         
-    def draw(self, screen):
+    def draw(self, screen, s_val, d_val):
         bold_font = pygame.font.SysFont("malgun gothic", 14, bold=True)
         idx_txt = bold_font.render(f"{self.idx+1}단계", True, (0,0,0))
-        s_txt = self.font.render(str("성공"), True, (0,0,0))
-        d_txt = self.font.render(str("파괴"), True, (0,0,0))
+        s_txt = self.font.render("성공", True, (0,0,0))
+        d_txt = self.font.render("파괴", True, (0,0,0))
         idx_rect = idx_txt.get_rect(center=(self.rect.x + self.rect.w // 2, self.rect.y + 15))
-        
         screen.blit(idx_txt, idx_rect)
         screen.blit(s_txt, (self.rect.x+5, self.rect.y+30))
         screen.blit(d_txt, (self.rect.x+5, self.rect.y+60))
@@ -81,7 +78,6 @@ def show_rate_table_popup(screen):
 
     total_w = cols * box_w + (cols - 1) * margin_x
     total_h = rows * box_h + (rows - 1) * margin_y
-
     start_x = (screen.get_width() - total_w) // 2
     start_y = (screen.get_height() - total_h) // 2
 
@@ -106,15 +102,15 @@ def show_rate_table_popup(screen):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                break
+                return
             for s_box, d_box in rate_boxes:
                 s_box.handle_event(event)
                 d_box.handle_event(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if save_btn.is_clicked(event.pos):
                     new_rate = []
-                    for s_box, d_box in rate_boxes:
+                    invalid = False
+                    for idx, (s_box, d_box) in enumerate(rate_boxes):
                         try:
                             s = float(s_box.text)
                         except:
@@ -123,8 +119,18 @@ def show_rate_table_popup(screen):
                             d = float(d_box.text)
                         except:
                             d = 0.0
+                        if s + d > 1.0:
+                            s = base_rate[idx][0]
+                            d = base_rate[idx][1]
+                            s_box.text = str(s)
+                            s_box.txt_surface = font.render(s_box.text, True, (0, 0, 0))
+                            d_box.text = str(d)
+                            d_box.txt_surface = font.render(d_box.text, True, (0, 0, 0))
+                            invalid = True
                         new_rate.append((s, d))
-                    if len(new_rate) == 30:
+                    if invalid:
+                        prompt = "저장 실패: 성공+파괴 확률 합이 1.0을 초과한 칸이 초기화되었습니다."
+                    elif len(new_rate) == 30:
                         rate.set_input_rate(new_rate)
                         prompt = "저장 완료!"
                     else:
@@ -138,13 +144,13 @@ def show_rate_table_popup(screen):
                     rate.set_input_rate(list(base_rate))
                     prompt = "되돌리기 완료!"
                 elif back_btn.is_clicked(event.pos):
-                    running = False
+                    return
 
         screen.fill((240, 240, 240))
         title = big_font.render("확률표 조정", True, (0, 0, 0))
         screen.blit(title, (screen.get_width() // 2 - title.get_width() // 2, 40))
-        for idx, (ibox, (s_box, d_box)) in enumerate(zip(index_boxes, rate_boxes)):
-            ibox.draw(screen, s_box.text, d_box.text)
+        for ibox, (s_box, d_box) in zip(index_boxes, rate_boxes):
+            ibox.draw(screen, None, None)
             s_box.draw(screen)
             d_box.draw(screen)
         save_btn.draw(screen)
@@ -155,4 +161,3 @@ def show_rate_table_popup(screen):
             screen.blit(prompt_txt, (screen.get_width() // 2 - prompt_txt.get_width() // 2, 80))
         pygame.display.flip()
         clock.tick(30)
-
