@@ -1,10 +1,17 @@
 import json
 
+def load_json(path):
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 table_path = "list_table.json"
 rate_path = "list_rate.json"
 
-with open(table_path, encoding="utf-8") as f:
-    table = json.load(f)
+table = load_json(table_path)
 
 level = list(range(1, 31))
 level_try = table["level_try"]
@@ -29,7 +36,6 @@ for i in range(30):
         a_try.append(0)
         m_s_rate.append(0)
 
-# 결과 저장
 rate_data = {
     "level": level,
     "a_try": a_try,
@@ -37,5 +43,34 @@ rate_data = {
     "m_s_rate": m_s_rate
 }
 
-with open(rate_path, "w", encoding="utf-8") as f:
-    json.dump(rate_data, f, ensure_ascii=False, indent=2)
+save_json(rate_path, rate_data)
+
+def load_table_data():
+    data = load_json("list_rate.json")
+    level = data["level"]
+    a_try = data["a_try"]
+    a_s_rate = data["a_s_rate"]
+    m_s_rate = data["m_s_rate"]
+    table_data = [["강화 단계", "평균 시도 횟수", "평균 성공률", "미니게임 성공 성공률"]]
+    for i in range(30):
+        table_data.append([
+            str(level[i]),
+            f"{a_try[i]:.2f}",
+            f"{a_s_rate[i]*100:.2f}%",
+            f"{m_s_rate[i]*100:.2f}%"
+        ])
+    return table_data
+
+def reset_json():
+    # list_rate.json 초기화
+    data = load_json("list_rate.json")
+    for key in data:
+        if key != "level":
+            data[key] = [0]*30
+    save_json("list_rate.json", data)
+    # list_table.json 초기화
+    table_data = load_json("list_table.json")
+    for key in table_data:
+        if key != "level":
+            table_data[key] = [0]*30
+    save_json("list_table.json", table_data)

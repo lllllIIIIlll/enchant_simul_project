@@ -14,14 +14,14 @@ font = pygame.font.SysFont("malgun gothic", 20, bold=True)
 big_font = pygame.font.SysFont("malgun gothic", 24, bold=True)
 
 class Button:
-    def __init__(self, rect, text):
+    def __init__(self, rect, text, font):
         self.rect = pygame.Rect(rect)
         self.text = text
+        self.font = font
 
     def draw(self, surface):
         pygame.draw.rect(surface, (200, 200, 200), self.rect)
-        bold_font = pygame.font.SysFont("malgun gothic", 20, bold=True)
-        txt = bold_font.render(self.text, True, (0, 0, 0))
+        txt = self.font.render(self.text, True, (0, 0, 0))
         txt_rect = txt.get_rect(center=self.rect.center)  
         surface.blit(txt, txt_rect)
 
@@ -107,7 +107,7 @@ type_select = []
 for e in equipment_data:
     if e["type"] not in type_select:
         type_select.append(e["type"])
-type_buttons = [Button((0, 0, 150, 50), t) for t in type_select]
+type_buttons = [Button((0, 0, 150, 50), t, font) for t in type_select]
 
 selected_type = None
 enchant_level = 0
@@ -171,14 +171,14 @@ while running:
         screen.blit(title, title_rect)
 
         rate_btn_y = title_rect.bottom + 30 
-        rate_btn = Button((screen_width // 2 - 75, rate_btn_y, 150, 40), "확률표")
+        rate_btn = Button((screen_width // 2 - 75, rate_btn_y, 150, 40), "확률표", font)
         rate_btn.draw(screen)
 
         # table_btn(통계표) 버튼 추가
-        table_btn = Button((screen_width // 2 + 85, rate_btn_y, 150, 40), "통계표")
+        table_btn = Button((screen_width // 2 + 85, rate_btn_y, 150, 40), "통계표", font)
         table_btn.draw(screen)
 
-        quit_btn = Button((screen_width - 150, screen_height - 70, 100, 40), "종료")
+        quit_btn = Button((screen_width - 150, screen_height - 70, 100, 40), "종료", font)
         quit_btn.draw(screen)
 
         draw_type_buttons(type_buttons, screen_width, screen_height)
@@ -199,10 +199,10 @@ while running:
         if equip:
             draw_equipment_image(equip, enchant_level, screen_width, screen_height)
 
-        enhance_btn = Button(((screen_width - 150) // 2, screen_height - 100, 150, 50), "강화")
+        enhance_btn = Button(((screen_width - 150) // 2, screen_height - 100, 150, 50), "강화", font)
         enhance_btn.draw(screen)
 
-        back_btn = Button((30, screen_height - 70, 100, 40), "뒤로가기")
+        back_btn = Button((30, screen_height - 70, 100, 40), "뒤로가기", font)
         back_btn.draw(screen)
 
         count_txt = font.render(f"누적 강화 횟수: {enchant_count}", True, (0, 0, 0))
