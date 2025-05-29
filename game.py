@@ -2,11 +2,13 @@ import pygame
 import json
 from enchant import enchant 
 from mini_game import mini_game_popup
+from enchant_rate import show_rate_table_popup
 
 pygame.init()
-screen = pygame.display.set_mode((800, 640))
+screen = pygame.display.set_mode((1000, 820))
 pygame.display.set_caption("장비강화")
-font = pygame.font.SysFont("malgun gothic", 20)
+font = pygame.font.SysFont("malgun gothic", 20, bold=True)
+big_font = pygame.font.SysFont("malgun gothic", 24, bold=True)
 
 class Button:
     def __init__(self, rect, text):
@@ -15,7 +17,8 @@ class Button:
 
     def draw(self, surface):
         pygame.draw.rect(surface, (200, 200, 200), self.rect)
-        txt = font.render(self.text, True, (0, 0, 0))
+        bold_font = pygame.font.SysFont("malgun gothic", 20, bold=True)
+        txt = bold_font.render(self.text, True, (0, 0, 0))
         txt_rect = txt.get_rect(center=self.rect.center)  
         surface.blit(txt, txt_rect)
 
@@ -49,6 +52,9 @@ while running:
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if selected_type is None:
+                # --- 확률표 버튼 클릭 처리 ---
+                if rate_btn.is_clicked(event.pos):
+                    show_rate_table_popup(screen)
                 for btn in type_buttons:
                     if btn.is_clicked(event.pos):
                         selected_type = btn.text
@@ -74,11 +80,18 @@ while running:
                     selected_type = None
                     enchant_level = 0
                     result_msg = ""
+                
 
     if selected_type is None:
-        title = font.render("장비강화", True, (0, 0, 0))
+        title = big_font.render("장비강화", True, (0, 0, 0))
         title_rect = title.get_rect(center=(screen_width // 2, 100))
         screen.blit(title, title_rect)
+
+        # --- 확률표 버튼 추가 (장비강화와 anvil 이미지 사이) ---
+        rate_btn_y = title_rect.bottom + 30  # "장비강화" 아래 30px
+        rate_btn = Button((screen_width // 2 - 75, rate_btn_y, 150, 40), "확률표")
+        rate_btn.draw(screen)
+
         # type 버튼: 중 하단 정렬
         btn_width, btn_height = 150, 50
         btn_gap = 40
@@ -172,6 +185,7 @@ while running:
                 screen.blit(msg_txt, msg_rect)
             else:
                 result_msg = ""
+
 
     pygame.display.flip()
 
